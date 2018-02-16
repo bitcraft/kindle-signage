@@ -1,0 +1,10 @@
+messages:
+  todays_date: "Today's date is:"
+  new_timecard: "Please fill out a new card today"
+  date_format: "%-m-%-d-%Y"
+
+render:
+  width: 600
+  height: 800
+  template: "template.html"
+  out_image: "kindle-signage.png"

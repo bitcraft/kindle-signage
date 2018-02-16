@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            height: 100%
+        }
+
+        body {
+            font-family: "Share", sans-serif;
+            font-size: 50px;
+            text-align: center;
+        }
+
+        div {
+            display: flex;
+            flex-flow: column nowrap;
+            flex: 1 0 auto;
+            justify-content: space-evenly;
+            align-items: stretch;
+            align-content: stretch;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <div>
+        <h3>{{ todays_date }}</h3>
+    </div>
+
+    <hr>
+
+    <div>
+        <h1><em>{{ weekday }}</em></h1>
+    </div>
+
+    <div>
+        <h1>{{ date_string }}</h1>
+    </div>
+    <hr>
+
+
+
+</div>
+
+</body>
+</html>
