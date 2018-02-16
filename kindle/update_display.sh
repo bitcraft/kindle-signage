@@ -1,3 +1,3 @@
 #!/bin/sh
 cd /tmp
-curl -O http://lunchbox:5000/kindle.png && eips -fg kindle.png
+curl -O http://lunchbox:5000/kindle-signage.png && eips -fg kindle-signage.png

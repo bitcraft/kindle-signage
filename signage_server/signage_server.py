@@ -1,4 +1,5 @@
 """
+For python 3.5+
 
 python requirements:
 * flask
@@ -18,11 +19,11 @@ flask run --host=0.0.0.0
 
 """
 
+import datetime
 import subprocess
-from tempfile import NamedTemporaryFile
 from os.path import getmtime
+from tempfile import NamedTemporaryFile
 
-import arrow
 import yaml
 from flask import Flask, send_file
 from jinja2 import Template
@@ -30,6 +31,7 @@ from jinja2 import Template
 app = Flask(__name__)
 
 config_filename = 'config.yaml'
+
 _last_config = 0
 _config = dict()
 
@@ -47,17 +49,17 @@ def get_config():
 
 
 def update_image():
-    """ Create new image fo use as digital signage
+    """ Create new image for use as digital signage
 
-    :return:
+    :rtype: str
     """
-    # TODO: some kind of check so a cached image is served
     config = get_config()
 
     render = config['render']
     messages = config['messages']
 
-    now = arrow.Arrow.now()
+    # fill in messages info with current data
+    now = datetime.datetime.now()
     messages['weekday'] = now.strftime("%A")
     messages['date_string'] = now.strftime(messages['date_format'])
 
@@ -69,27 +71,25 @@ def update_image():
     # do not remove suffix param when using wkhtmltoimage
     with NamedTemporaryFile('w', suffix='.html') as fp:
         # record the name of the temp file
-        render['out_html'] = fp.name
+        render['temp_html'] = fp.name
 
         # render template as html to a temp file
         fp.write(template.render(messages))
         fp.flush()  # make sure data is truly ready to be read later
 
         # render to a png
-        args = 'wkhtmltoimage --width {width} --height {height} {out_html} {out_image}'
-        args = args.format(**render)
-        args = args.split()
-        subprocess.run(args)
+        cmd = render['render_cmd'].format(**render)
+        subprocess.run(cmd, shell=True)
 
     # change image to greyscale & optimize file size
-    args = 'pngcrush -rem gAMA -rem cHRM -rem iCCP -rem sRGB -rem alla -rem text -c 0 -ow {out_image}'
-    args = args.format(**render)
-    args = args.split()
-    subprocess.run(args)
+    cmd = render['optim_cmd'].format(**render)
+    subprocess.run(cmd, shell=True)
+
+    return render['out_image']
 
 
 @app.route("/kindle-signage.png")
 def serve_image():
-    config = get_config()
-    update_image()
-    return send_file(config['render']['out_image'])
+    # TODO: some kind of check so a cached image is served
+    filename = update_image()
+    return send_file(filename)

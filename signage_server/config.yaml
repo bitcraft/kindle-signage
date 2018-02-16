@@ -1,3 +1,6 @@
+meta:
+  new_timecard_day: 2
+
 messages:
   todays_date: "Today's date is:"
   new_timecard: "Please fill out a new card today"
@@ -8,3 +11,6 @@ render:
   height: 800
   template: "template.html"
   out_image: "kindle-signage.png"
+  temp_html:
+  render_cmd: 'wkhtmltoimage --width {width} --height {height} {temp_html} {out_image}'
+  optim_cmd: 'pngcrush -rem gAMA -rem cHRM -rem iCCP -rem sRGB -rem alla -rem text -c 0 -ow {out_image}'

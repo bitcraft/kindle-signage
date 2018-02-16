@@ -1,6 +1,8 @@
 Kindle Signage
 ==============
 
+For python 3.5+
+
 Repository for my experiments with an old Kindle Touch for use as digital signage.
 
 The project consists of a few scripts for a jailbroken kindle and a poython server for the images.
