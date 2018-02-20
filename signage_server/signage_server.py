@@ -48,20 +48,31 @@ def get_config():
     return _config
 
 
+def populate_strings(messages):
+    """ Add strings for the template to use.
+
+    Typically, this is dynamic data, time/date related
+
+    :type messages: dict
+    :return:
+    """
+    # fill in messages info with current data
+    now = datetime.datetime.now()
+    messages['weekday'] = now.strftime("%A")
+    messages['date_string'] = now.strftime(messages['date_format'])
+
+
 def update_image():
     """ Create new image for use as digital signage
 
     :rtype: str
     """
     config = get_config()
-
     render = config['render']
     messages = config['messages']
 
-    # fill in messages info with current data
-    now = datetime.datetime.now()
-    messages['weekday'] = now.strftime("%A")
-    messages['date_string'] = now.strftime(messages['date_format'])
+    # fill in dynamic strings for the template to use
+    populate_strings(messages)
 
     # read template data
     with open(render['template']) as fp:
